@@ -4,8 +4,9 @@
 
 int main(){
     float x0, x1, x, f_x, e;
-    printf("Enter the Value of [x0, x1] and max error \n");
-    scanf("%f%f%f", &x0, &x1, &e);
+    int i;
+    printf("Enter the Value of [x0, x1] and max error and max iterations \n");
+    scanf("%f%f%f%d", &x0, &x1, &e, &i);
     if (f(x0) * f(x1)>0){ 
         printf("Invalid input");
         return 0;
@@ -23,6 +24,10 @@ int main(){
             printf("\n\n\n approximate root= %.4f \n\n", x);
             return 0;
         }
+	if(count > i){
+	    printf("Not convergent");
+	    return 0;
+	}
     }
     while(fabs(f(x))>e);
     printf("\n\n\n approximate root= %.4f \n\n", x);

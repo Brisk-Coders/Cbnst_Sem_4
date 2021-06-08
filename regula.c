@@ -6,7 +6,7 @@ int main(){
     float x0, x1, x, f_x, e;
     int i;
     printf("Enter the Value of [x0, x1], max tolerable error and max iterations\n");
-    scanf("%f%f%f", &x0, &x1, &e, &i);
+    scanf("%f%f%f%d", &x0, &x1, &e, &i);
     if (f(x0) * f(x1)>0){ 
         printf("Invalid input");
         return 0;

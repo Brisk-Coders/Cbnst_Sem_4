@@ -1,48 +1,44 @@
 #include<stdio.h>
-#define MAXN 100
-#define ORDER 4
- 
-void main()
-{
-    float ax[MAXN+1], ay [MAXN+1], diff[MAXN+1][ORDER+1], nr=1.0, dr=1.0,x,p,h,yp;
-    int n,i,j,k;
-    printf("\nEnter the value of n:\n");
-    scanf("%d",&n);
- 
-    printf("\nEnter the values in form x,y:\n");
-    for (i=0;i<=n;i++)
-        scanf("%f %f",&ax[i],&ay[i]);
-    printf("\nEnter the value of x for which the value of y is to be found: \n");
-    scanf("%f",&x);
-    h=ax[1]-ax[0];
- 
-    //now making the difference table
-    //calculating the 1st order of differences
 
-    for (i=0;i<=n-1;i++)
-        diff[i][1] = ay[i+1]-ay[i];
- 
-    //now calculating the second and higher order differences
-    for (j=2;j<=ORDER;j++)
-        for(i=0;i<=n-j;i++)
-        diff[i][j] = diff[i+1][j-1] - diff[i][j-1];
- 
-    //now finding x0
-    i=0;
-    while (!(ax[i]>x))
-        i++;
- 
-    //now ax[i] is x0 and ay[i] is y0
-    i--;
-    p = (x-ax[i])/h;
-    yp = ay[i];
- 
-    //now carrying out interpolation
-    for (k=1;k<=ORDER;k++)
-    {
-        nr *=p-k+1;
-        dr *=k;
-        yp +=(nr/dr)*diff[i][k];
+float u_cal(float u, int n){
+    float t = u;
+    for(int i=1;i<n;i++)    
+        t *= (u-i);
+    return t;
+}
+ int fact(int n){
+    if(n==0) return 1;
+    return n*fact(n-1);
+ }
+
+int main(){
+    int n;
+    printf("Enter n: ");
+    scanf("%d",&n);
+    float y[10][10];
+    float x[10];
+    printf("Enter the values of x argument:\n");
+    for(int i=0;i<n;i++)
+        scanf("%f",&x[i]);
+    printf("Enter the values of y argument:\n");
+    for(int i=0;i<n;i++)
+        scanf("%f",&y[i][0]);
+    for(int i=1;i<n;i++)
+        for(int j=0;j<n-i;j++)  
+            y[j][i] = y[j+1][i-1] - y[j][i-1];
+    for(int i=0;i<n;i++){
+        printf("%.4f\t",x[i]);
+        for(int j=0;j<n-i;j++)
+            printf("%.4f\t",y[i][j]);
+        printf("\n");
     }
-    printf("\nWhen x = %6.1f, corresponding value of y = %6.2f\n",x,yp);
+    float v;
+    printf("Enter the value to interpolate: ");
+    scanf("%f",&v);
+    float sum=y[0][0];
+    float u = (v-x[0])/(x[1] - x[0]);
+    for(int i=1;i<n;i++)    
+        sum += (u_cal(u,i)*y[0][i])/fact(i);
+
+    printf("val at %f is %.4f",v,sum);
 }
